@@ -32,3 +32,18 @@ jobs:
       - run: uv sync --group dev
 
       - run: uv run pytest tests -v
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Send deploy request
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "X-API-Key: ${{ secrets.LMS_API_KEY }}" \
+            -d "{\"image\":\"ghcr.io/${{ github.repository }}:${{ github.sha }}\"}" \
+            https://lms.python-labs.ru/api/deploy-requests

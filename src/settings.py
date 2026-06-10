@@ -11,7 +11,10 @@ class Settings(BaseSettings):
     # postgres_port: int
     # postgres_username: str
 
-    database_url: str = Field(validation_alias="DATABASE_URL")
+    database_url: str | None = Field(
+        default="postgresql+asyncpg://postgres:postgres@localhost:5433/auth_db",
+        validation_alias="DATABASE_URL",
+    )
 
     jwt_secret: str = "change-me"
     jwt_algorithm: str = "HS256"
