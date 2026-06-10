@@ -2,8 +2,7 @@ name: Deploy to LMS
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, tidilia]
 
 jobs:
   build:

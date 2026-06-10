@@ -1,10 +1,10 @@
 from typing import Annotated
 
 import jwt
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
 from src.application.ports.uow import UnitOfWork
 from src.application.ports.usecases import (
     DeleteUserPort,

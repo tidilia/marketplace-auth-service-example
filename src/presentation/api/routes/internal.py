@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Response, status
+
 from src.application.exceptions import UserNotFoundError
 from src.presentation.api.dependencies import DeleteUserDep, GetUserDep
 from src.presentation.api.schemas import UserResponse
