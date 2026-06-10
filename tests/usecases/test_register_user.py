@@ -42,6 +42,4 @@ async def test_register_duplicate_email_raises(fake_uow: FakeUnitOfWork) -> None
     await usecase.execute(name="Alice", email="alice@test.com", password="securepass")
 
     with pytest.raises(EmailAlreadyTakenError):
-        await usecase.execute(
-            name="Bob", email="alice@test.com", password="otherpass"
-        )
+        await usecase.execute(name="Bob", email="alice@test.com", password="otherpass")

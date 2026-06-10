@@ -1,7 +1,5 @@
 from httpx import AsyncClient
 
-from tests.presentation.conftest import JWT_SECRET
-
 
 async def test_register_success(client: AsyncClient) -> None:
     resp = await client.post(
