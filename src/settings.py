@@ -15,7 +15,7 @@ class Settings(BaseSettings):
 
     database_url: str = Field(
         default="postgresql+asyncpg://postgres:postgres@localhost:5433/auth_db",
-        alias="DATABASE_URL",
+        alias="POSTGRES_CONNECTION_STRING",
     )
 
     jwt_secret: str = "change-me"
