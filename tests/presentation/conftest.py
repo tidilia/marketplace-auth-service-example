@@ -1,7 +1,7 @@
 import pytest
-from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 
+from fastapi import FastAPI
 from src.presentation.api.dependencies import get_settings, get_uow
 from src.presentation.api.routes.internal import router as internal_router
 from src.presentation.api.routes.public import router as public_router

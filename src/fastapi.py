@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-
 from src.infrastructure.persistence.database import (
     create_engine,
     create_session_factory,

@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException, status
-
 from src.application.exceptions import (
     EmailAlreadyTakenError,
     InvalidCredentialsError,
