@@ -3,7 +3,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", populate_by_name=True
+    )
 
     # postgres_host: str
     # postgres_database_name: str
@@ -11,9 +13,9 @@ class Settings(BaseSettings):
     # postgres_port: int
     # postgres_username: str
 
-    database_url: str | None = Field(
+    database_url: str = Field(
         default="postgresql+asyncpg://postgres:postgres@localhost:5433/auth_db",
-        validation_alias="DATABASE_URL",
+        alias="DATABASE_URL",
     )
 
     jwt_secret: str = "change-me"
