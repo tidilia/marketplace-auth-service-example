@@ -1,20 +1,57 @@
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", populate_by_name=True
+    )
 
-    postgres_host: str
-    postgres_database_name: str
-    postgres_password: str
-    postgres_port: int
-    postgres_username: str
+    # postgres_host: str
+    # postgres_database_name: str
+    # postgres_password: str
+    # postgres_port: int
+    # postgres_username: str
+
+    # db_url: str = Field(
+    #     default="postgresql+asyncpg://postgres:postgres@localhost:5433/auth_db",
+    #     alias="POSTGRES_CONNECTION_STRING",
+    # )
+
+    # jwt_secret: str = "change-me"
+    # jwt_algorithm: str = "HS256"
+    # jwt_expire_hours: int = 24
+    # jwt_refresh_expire_days: int = 30
+
+    # # @property
+    # # def database_url(self) -> str:
+    # #     return f"postgresql+asyncpg://{self.postgres_username}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_database_name}"
+
+    # @property
+    # def database_url(self) -> str:
+    #     return self.db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+
+    database_url: str = Field(
+        default="postgresql+asyncpg://postgres:postgres@localhost:5433/auth_db",
+        validation_alias="POSTGRES_CONNECTION_STRING",
+    )
 
     jwt_secret: str = "change-me"
     jwt_algorithm: str = "HS256"
     jwt_expire_hours: int = 24
     jwt_refresh_expire_days: int = 30
 
-    @property
-    def database_url(self) -> str:
-        return f"postgresql+asyncpg://{self.postgres_username}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_database_name}"
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def normalize_database_url(cls, v):
+        if v is None:
+            return v
+
+        # если прилетело postgres:// или postgresql:// — нормализуем
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                return v.replace("postgres://", "postgresql+asyncpg://", 1)
+            if v.startswith("postgresql://") and "+asyncpg" not in v:
+                return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+
+        return v

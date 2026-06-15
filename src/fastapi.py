@@ -8,14 +8,17 @@ from src.presentation.api.dependencies import setup
 from src.presentation.api.routes.internal import router as internal_router
 from src.presentation.api.routes.public import router as public_router
 from src.settings import Settings
+from src.tracing import TraceMiddleware, configure_logging
 
 
 def create_app() -> FastAPI:
+    configure_logging()
     settings = Settings()
     engine = create_engine(settings)
     session_factory = create_session_factory(engine)
 
     app = FastAPI(title="Auth Service")
+    app.add_middleware(TraceMiddleware)
     setup(settings, session_factory)
     app.include_router(public_router)
     app.include_router(internal_router)
